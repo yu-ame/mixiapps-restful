@@ -30,3 +30,15 @@ docker save mixiapps-restful > /tmp/mixiapps-restful.tar
 scp /tmp/mixiapps-restful.tar user@host:/tmp/
 ssh user@host docker load < /tmp/mixiapps-restful.tar
 ```
+
+## 使い方
+
+mixiアプリ設定のガジェットURLに 
+
+```
+http://example.com/xml/gadget.xml
+```
+
+と設定してmixiアプリにアクセスしてください
+
+

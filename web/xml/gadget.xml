@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+  <ModulePrefs title="Hello, world!">
+    <Require feature="opensocial-0.8" />
+  </ModulePrefs>
+  <Content type="html"><![CDATA[
+
+<div>Hello, <input type="text" id="target" /> !</div>
+<input type="button" onclick="javascript:makeRequest()" value="verify makeRequest">
+<div id="makeRequestResponse"></div>
+<div id="loadFriendsResponse"></div>
+
+<script type="text/javascript">
+
+function makeRequest(){
+  var url = "{{ .AppUrl }}/makeRequest";
+  var params = {};
+  params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
+  gadgets.io.makeRequest(url, function(response) {
+    var data = response.data;
+    document.getElementById("makeRequestResponse").innerHTML = data;
+  }, params);
+}
+
+function init() {
+  loadViewer();  
+  loadFriends();
+}
+
+function loadViewer(){
+  var req = opensocial.newDataRequest();
+  req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), "viewer");
+  req.send(function(data) {
+    var viewer = data.get("viewer").getData();
+    var name = viewer.getDisplayName();
+    document.getElementById("target").value = name;
+  });
+
+}
+
+function loadFriends(){
+  var params = {};
+  params[opensocial.IdSpec.Field.USER_ID] = opensocial.IdSpec.PersonId.VIEWER;
+  params[opensocial.IdSpec.Field.GROUP_ID] = "FRIENDS";
+  var idSpec = opensocial.newIdSpec(params);
+  var req = opensocial.newDataRequest();
+  req.add(req.newFetchPeopleRequest(idSpec), "friends");
+  req.send(function(data) {
+    var friends = data.get("friends").getData();
+    friends.each(function(friend) {
+      var id = friend.getId();
+      var nickname = friend.getDisplayName();
+      document.getElementById("loadFriendsResponse").innerHTML += nickname + "<br/>";
+    });
+  });  
+}
+gadgets.util.registerOnLoadHandler(init);
+</script>
+
+  ]]></Content>
+</Module>

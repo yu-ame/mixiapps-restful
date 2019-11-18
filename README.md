@@ -13,8 +13,10 @@ git clone https://github.com/yu-ame/mixiapps-restful.git
 cd mixiapps-restful
 
 #defaultのファイルをコピーして起動ポートやURLを設定してください。
+#listen_portを8080などにする場合はhttp://example.com:8080　とします
 cp configs/config_default.json configs/config.json 
 vi configs/config.json
+
 
 #ビルド
 docker build -f build/dockerfiles/Dockerfile . -t mixiapps-restful

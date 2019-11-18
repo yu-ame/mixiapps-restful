@@ -1,4 +1,4 @@
 {
     "listen_port": "80",
-    "app_url": "http://example.com:80"
+    "app_url": "http://example.com"
 }
